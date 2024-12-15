@@ -46,7 +46,7 @@ export const compressImage = (base64Image) => {
       resolve(compressedBase64Image);
     };
 
-    img.onerror = (error) =>
+    img.onerror = () =>
       reject(new Error("Failed to load image for compression"));
   });
 };
