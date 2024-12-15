@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { useChatStore } from "../store/useChatStore";
 import { Image, Send, X } from "lucide-react";
 import toast from "react-hot-toast";
+import { compressImage } from "../lib/utils";
 
 const MessageInput = () => {
   const [text, setText] = useState("");
@@ -33,9 +34,16 @@ const MessageInput = () => {
     if (!text.trim() && !imagePreview) return;
 
     try {
+      let compressedImage = null;
+
+      // Compress the imagePreview if it exists
+      if (imagePreview) {
+        compressedImage = await compressImage(imagePreview);
+      }
+
       await sendMessage({
         text: text.trim(),
-        image: imagePreview,
+        image: compressedImage || null, // Use compressed image or null if no image
       });
 
       // Clear form
